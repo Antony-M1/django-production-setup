@@ -5,7 +5,7 @@
 - [ASGI](https://asgi.readthedocs.io/en/latest/) is the new, asynchronous-friendly standard that will allow your Django site to use asynchronous Python features, and asynchronous Django features as they are developed.
 
 ## Deploy with WSGI
-- [How to use Django with Gunicorn](https://github.com/Antony-M1/django-production-setup/blob/dev/docs/djangowithgunicorn.md)
+- [How to use Django with Gunicorn](https://github.com/Antony-M1/django-production-setup/blob/dev/docs/How-to-use-Django-with-Gunicorn.md)
 - [How to use Django with uWsgi](url)
 - [How to use Django with Apache & mod_wsgi](url)
 - [How to authenticate against Django’s user database from Apache](url)
