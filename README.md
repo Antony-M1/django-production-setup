@@ -1,2 +1,1 @@
-# django-production-setup
-django, django production setup 
+<b> Django Deployment </b>
