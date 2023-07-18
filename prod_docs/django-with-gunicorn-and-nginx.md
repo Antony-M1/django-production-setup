@@ -114,6 +114,59 @@ sudo systemctl enable gunicorn.socket
 ```
 You can confirm that the operation was successful by checking for the socket file.
 
+## Checking for the Gunicorn socket file
+Check the status of the process to find out whether it was able to start:
+```
+sudo systemctl status gunicorn.socket
+```
+You should receive an output like this:
+```
+Output
+● gunicorn.socket - gunicorn socket
+     Loaded: loaded (/etc/systemd/system/gunicorn.socket; enabled; vendor preset: enabled)
+     Active: active (listening) since Mon 2022-04-18 17:53:25 UTC; 5s ago
+   Triggers: ● gunicorn.service
+     Listen: /run/gunicorn.sock (Stream)
+     CGroup: /system.slice/gunicorn.socket
+
+Apr 18 17:53:25 django systemd[1]: Listening on gunicorn socket.
+```
+
+Next, check for the existence of the gunicorn.sock file within the /run directory:
+```
+file /run/gunicorn.sock
+```
+```
+Output
+/run/gunicorn.sock: socket
+```
+
+## Testing Socket Activation
+Currently, if you’ve only started the gunicorn.socket unit, the gunicorn.service will not be active yet since the socket has not yet received any connections. You can check this by typing:
+```
+sudo systemctl status gunicorn
+```
+You should receive output like this
+```
+Output
+○ gunicorn.service - gunicorn daemon
+     Loaded: loaded (/etc/systemd/system/gunicorn.service; disabled; vendor preset: enabled)
+     Active: inactive (dead)
+TriggeredBy: ● gunicorn.socket
+```
+You can verify that the Gunicorn service is running by typing:
+```
+sudo systemctl status gunicorn
+```
+
+## Configure Nginx to Proxy Pass to Gunicorn
+
+
+
+
+
+
+
 
 
 
