@@ -38,10 +38,12 @@ We will have to confirm the operation. The static files will then be placed in a
 
 ## Testing Gunicorn’s or Uvicorn's Ability to Serve the Project
 We can test this by entering the project directory and using gunicorn to load the project’s WSGI module:
+`Gunicorn`
 ```
 gunicorn --bind 0.0.0.0:8000 myproject.wsgi
 ```
 (or)
+`Uvicorn`
 ```
 uvicorn myproject.asgi:application
 ```
