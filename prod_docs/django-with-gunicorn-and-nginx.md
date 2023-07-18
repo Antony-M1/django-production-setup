@@ -92,6 +92,19 @@ ExecStart=/home/ubuntu/myprojectdir/myprojectenv/bin/gunicorn \
 [Install]
 WantedBy=multi-user.target
 ```
+1. Start with the [Unit] section, which is used to specify metadata and dependencies.
+   - Put a description of the service here and tell the init system to only start this after the networking target has been reached.
+   - Because your service relies on the socket from the socket file, you need to include a Requires directive to indicate that relationship
+2. Next, you’ll open up the [Service] section
+   - Specify the user and group that you want to process to run under.
+   - You will give your regular user account ownership of the process since it owns all of the relevant files. You’ll give group ownership to the www-data group so that Nginx can communicate easily with Gunicorn.
+   - Then you’ll map out the working directory and specify the command to use to start the service.
+   - In this case, you have to specify the full path to the Gunicorn executable, which is installed within our virtual environment.
+   - You will then bind the process to the Unix socket you created within the /run directory so that the process can communicate with Nginx.
+   - You log all data to standard output so that the journald process can collect the Gunicorn logs. You can also specify any optional Gunicorn tweaks here. For example, you specified 3 worker processes in this case:
+3. Finally, you’ll add an [Install] section.
+   - This will tell systemd what to link this service to if you enable it to start at boot. You want this service to start when the regular multi-user system is up and running
+
 With that, your systemd service file is complete. Save and close it now.
 
 You can now start and enable the Gunicorn socket. This will create the socket file at /run/gunicorn.sock now and at boot. When a connection is made to that socket, systemd will automatically start the gunicorn.service to handle it:
