@@ -51,7 +51,7 @@ This will start Gunicorn or Uvicorn on the same interface that the Django develo
 
 _Note: The admin interface will not have any of the styling applied since **Gunicorn or Uvicorn does not know how to find the static CSS content** responsible for this_
 
-## Creating systemd Socket and Service Files for Gunicorn
+## Creating systemd Socket and Service Files for Gunicorn or Uvicorn
 We have tested that Gunicorn can interact with our Django application, but we should now implement a more robust way of starting and stopping the application server.
 To accomplish this, We'll make [systemd](https://chat.openai.com/share/35085535-9f16-4ade-ad28-24371e24d94d) service and socket files
 
@@ -63,7 +63,7 @@ sudo nano /etc/systemd/system/gunicorn.socket
 Inside, We will create a [Unit] section to describe the socket, a [Socket] section to define the socket location, and an [Install] section to make sure the socket is created at the right time:
 
 ### gunicorn.socket
-File name `gunicorn.socket`
+File name `gunicorn.socket` Same file for both ASGI & WSGI setup
 ```
 [Unit]
 Description=gunicorn socket
@@ -102,7 +102,7 @@ ExecStart=/home/ubuntu/myprojectdir/myprojectenv/bin/gunicorn \
 WantedBy=multi-user.target
 ```
 
-### gunicorn.service for WSGI with uvicorn
+### gunicorn.service for ASGI
 File name `gunicorn.service`
 ```
 Description=gunicorn daemon
@@ -190,8 +190,8 @@ You can verify that the Gunicorn service is running by typing:
 ```
 sudo systemctl status gunicorn
 ```
-
-## Configure Nginx to Proxy Pass to Gunicorn
+ 
+## Configure Nginx to Proxy Pass to Gunicorn or Uvicorn
 Now that Gunicorn is set up, you need to configure Nginx to pass traffic to the process
 Start by creating and opening a new server block in Nginx sites-available directory
 ```
