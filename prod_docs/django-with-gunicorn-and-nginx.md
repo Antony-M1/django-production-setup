@@ -57,7 +57,7 @@ sudo nano /etc/systemd/system/gunicorn.socket
 Inside, We will create a [Unit] section to describe the socket, a [Socket] section to define the socket location, and an [Install] section to make sure the socket is created at the right time:
 
 ### gunicorn.socket
-`gunicorn.socket`
+File name `gunicorn.socket`
 ```
 [Unit]
 Description=gunicorn socket
@@ -75,6 +75,7 @@ Next, Create and open a systemd service file for Gunicorn with sudo privileges i
 sudo nano /etc/systemd/system/gunicorn.service
 ```
 ### gunicorn.service for WSGI
+File name `gunicorn.service`
 ```
 [Unit]
 Description=gunicorn daemon
@@ -96,6 +97,7 @@ WantedBy=multi-user.target
 ```
 
 ### gunicorn.service for WSGI with uvicorn
+File name `gunicorn.service`
 ```
 Description=gunicorn daemon
 Requires=gunicorn.socket
