@@ -29,18 +29,18 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 python manage.py makemigrations
 python manage.py migrate
 ```
-You can collect all of the static content into the directory location that you configured by typing:
+We can collect all of the static content into the directory location that you configured by typing:
 ```
 python manage.py collectstatic
 ```
-You will have to confirm the operation. The static files will then be placed in a directory called static within your project directory.
+We will have to confirm the operation. The static files will then be placed in a directory called static within your project directory.
 
 ## Testing Gunicorn’s Ability to Serve the Project
-You can test this by entering the project directory and using gunicorn to load the project’s WSGI module:
+We can test this by entering the project directory and using gunicorn to load the project’s WSGI module:
 ```
 gunicorn --bind 0.0.0.0:8000 myproject.wsgi
 ```
-This will start Gunicorn on the same interface that the Django development server was runnig on. You can go back and test the app again in your browser
+This will start Gunicorn on the same interface that the Django development server was runnig on. We can go back and test the app again in your browser
 
 _Note: The admin interface will not have any of the styling applied since **Gunicorn does not know how to find the static CSS content** responsible for this_
 
@@ -53,7 +53,7 @@ Start by creating and opening a systemd socket file for Gunicorn with sudo privi
 sudo nano /etc/systemd/system/gunicorn.socket
 ```
 
-Inside, you will create a [Unit] section to describe the socket, a [Socket] section to define the socket location, and an [Install] section to make sure the socket is created at the right time:
+Inside, We will create a [Unit] section to describe the socket, a [Socket] section to define the socket location, and an [Install] section to make sure the socket is created at the right time:
 
 ### gunicorn.socket
 ```
@@ -102,7 +102,7 @@ WantedBy=multi-user.target
    - In this case, you have to specify the full path to the Gunicorn executable, which is installed within our virtual environment.
    - You will then bind the process to the Unix socket you created within the /run directory so that the process can communicate with Nginx.
    - You log all data to standard output so that the journald process can collect the Gunicorn logs. You can also specify any optional Gunicorn tweaks here. For example, you specified 3 worker processes in this case:
-3. Finally, you’ll add an [Install] section.
+3. Finally, We’ll add an [Install] section.
    - This will tell systemd what to link this service to if you enable it to start at boot. You want this service to start when the regular multi-user system is up and running
 
 With that, your systemd service file is complete. Save and close it now.
@@ -186,12 +186,12 @@ server {
 - Next Step, We'll tell Nginx to ignore any problems with finding a favicon. We'll also tell it where to find the static assets that we've collected in our projectdir/static directory. All of these files have a standand URI prefix of "/static", So we can create a location block to match those requests.
 - Finally, Create a location / {} block to match all other requests. Inside of this location, We'll include the standard proxy_params(Forwarding to app server) file included with the Nginx installation and then pass the traffic directly to the gunicorn socket
 
-Save and close the file when you're finished. Now we can enable the file by linking it to the sites-enabled directory
+Save and close the file when We're finished. Now we can enable the file by linking it to the sites-enabled directory
 ```
 sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled
 ```
 
-Test your Nginx configuration for syntax errors by typing
+Test our Nginx configuration for syntax errors by typing
 ```
 sudo nginx -t
 ```
@@ -207,7 +207,7 @@ sudo ufw delete allow 8000
 sudo ufw allow 'Nginx Full'
 ```
 
-You should now be able to go to your server’s domain or IP address to view your application.
+We should now be able to go to our server’s domain or IP address to view our application.
 
 
 
