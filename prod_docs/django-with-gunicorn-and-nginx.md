@@ -41,6 +41,7 @@ We can test this by entering the project directory and using gunicorn to load th
 ```
 gunicorn --bind 0.0.0.0:8000 myproject.wsgi
 ```
+(or)
 ```
 uvicorn myproject.asgi:application
 ```
