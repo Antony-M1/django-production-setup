@@ -57,6 +57,7 @@ sudo nano /etc/systemd/system/gunicorn.socket
 Inside, We will create a [Unit] section to describe the socket, a [Socket] section to define the socket location, and an [Install] section to make sure the socket is created at the right time:
 
 ### gunicorn.socket
+`gunicorn.socket`
 ```
 [Unit]
 Description=gunicorn socket
