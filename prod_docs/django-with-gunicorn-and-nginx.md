@@ -36,14 +36,17 @@ python manage.py collectstatic
 ```
 We will have to confirm the operation. The static files will then be placed in a directory called static within your project directory.
 
-## Testing Gunicorn’s Ability to Serve the Project
+## Testing Gunicorn’s or Uvicorn's Ability to Serve the Project
 We can test this by entering the project directory and using gunicorn to load the project’s WSGI module:
 ```
 gunicorn --bind 0.0.0.0:8000 myproject.wsgi
 ```
-This will start Gunicorn on the same interface that the Django development server was runnig on. We can go back and test the app again in your browser
+```
+uvicorn myproject.asgi:application
+```
+This will start Gunicorn or Uvicorn on the same interface that the Django development server was runnig on. We can go back and test the app again in your browser
 
-_Note: The admin interface will not have any of the styling applied since **Gunicorn does not know how to find the static CSS content** responsible for this_
+_Note: The admin interface will not have any of the styling applied since **Gunicorn or Uvicorn does not know how to find the static CSS content** responsible for this_
 
 ## Creating systemd Socket and Service Files for Gunicorn
 We have tested that Gunicorn can interact with our Django application, but we should now implement a more robust way of starting and stopping the application server.
