@@ -73,7 +73,7 @@ Next, Create and open a systemd service file for Gunicorn with sudo privileges i
 ```
 sudo nano /etc/systemd/system/gunicorn.service
 ```
-### gunicorn.service
+### gunicorn.service for WSGI
 ```
 [Unit]
 Description=gunicorn daemon
@@ -93,6 +93,28 @@ ExecStart=/home/ubuntu/myprojectdir/myprojectenv/bin/gunicorn \
 [Install]
 WantedBy=multi-user.target
 ```
+
+### gunicorn.service for WSGI with uvicorn
+```
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/myprojectdir
+ExecStart=/home/ubuntu/myprojectdir/myprojectenv/bin/gunicorn \
+          --access-logfile - \
+          -k uvicorn.workers.UvicornWorker \
+          --workers 3 \
+          --bind unix:/run/gunicorn.sock \
+          myproject.asgi:application
+
+[Install]
+WantedBy=multi-user.target
+```
+
 1. Start with the [Unit] section, which is used to specify metadata and dependencies.
    - Put a description of the service here and tell the init system to only start this after the networking target has been reached.
    - Because your service relies on the socket from the socket file, you need to include a Requires directive to indicate that relationship
