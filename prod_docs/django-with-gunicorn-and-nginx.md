@@ -160,8 +160,54 @@ sudo systemctl status gunicorn
 ```
 
 ## Configure Nginx to Proxy Pass to Gunicorn
+Now that Gunicorn is set up, you need to configure Nginx to pass traffic to the process
+Start by creating and opening a new server block in Nginx sites-available directory
+```
+sudo nano /etc/nginx/sites-available/<myproject>
+```
+Inside /etc/nginx/sites-available/<myproject>
+```
+server {
+    listen 80;
+    server_name server_domain_or_IP;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/sammy/myprojectdir;
+    }
+
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+```
+- In server block We're specifying that this should listen on the normal port 80 and it should response to our server's domain or IP address
+- Next Step, We'll tell Nginx to ignore any problems with finding a favicon. We'll also tell it where to find the static assets that we've collected in our projectdir/static directory. All of these files have a standand URI prefix of "/static", So we can create a location block to match those requests.
+- Finally, Create a location / {} block to match all other requests. Inside of this location, We'll include the standard proxy_params(Forwarding to app server) file included with the Nginx installation and then pass the traffic directly to the gunicorn socket
+
+Save and close the file when you're finished. Now we can enable the file by linking it to the sites-enabled directory
+```
+sudo ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled
+```
+
+Test your Nginx configuration for syntax errors by typing
+```
+sudo nginx -t
+```
+If no errors are reported, go ahead and restart Nginx by typing:
+```
+sudo systemctl restart nginx
+```
 
 
+Finally, We will need to open up our firewall to normal traffic on port 80. Since we no longer need access to the development server, We can remove the rule to open port 8000 as well:
+```
+sudo ufw delete allow 8000
+sudo ufw allow 'Nginx Full'
+```
+
+You should now be able to go to your server’s domain or IP address to view your application.
 
 
 
