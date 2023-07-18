@@ -1,5 +1,5 @@
 # DJANGO PRODUCTION SETUP WITH GUNICORN & NGINX
-### [Official Doc](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-22-04#testing-gunicorn-s-ability-to-serve-the-project)
+### [Official Doc FR](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-22-04#testing-gunicorn-s-ability-to-serve-the-project)
 ### Prerequisites
 - Gunicorn
 - Nginx &
