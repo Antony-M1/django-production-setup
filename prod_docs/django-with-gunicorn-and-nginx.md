@@ -241,8 +241,10 @@ sudo ufw allow 'Nginx Full'
 We should now be able to go to our server’s domain or IP address to view our application.
 
 
+## Reference Site
+[How To Set Up an ASGI Django App with Postgres, Nginx, and Uvicorn on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-asgi-django-app-with-postgres-nginx-and-uvicorn-on-ubuntu-20-04)
 
-
+[How To Set Up Django with Postgres, Nginx, and Gunicorn on Ubuntu 22.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-22-04)
 
 
 
