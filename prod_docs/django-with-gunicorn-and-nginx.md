@@ -330,8 +330,19 @@ Run this command to get a certificate and have Certbot edit your nginx configura
 
 To confirm that your site is set up properly, visit https://yourwebsite.com/ in your browser and look for the lock icon in the URL bar.
 
-# Hostlinger
+# Hostinger
 
+## create subdomain,
+Navigate to DNS record and create new subdomain,
+![image_2023_10_18T14_45_05_298Z](https://github.com/Antony-M1/django-production-setup/assets/101241405/848244cd-2871-49d1-baac-6b2381e22eda)
+
+Where Type A -> To allow to certbot A is need, To Run in http we can use CNAME itself.
+A Record:
+An A record (Address Record) is used to map a domain or subdomain to an IP address.
+CNAME Record:
+A CNAME record (Canonical Name Record) is used to create an alias or shortcut for a domain or subdomain
+name -> domain name, here it is django
+TTL -> TTL is measured in seconds, and it signifies the amount of time a DNS resolver should keep a record in its cache before checking for an updated version from the authoritative DNS server.
 
 
 ![image_2023_10_18T13_43_39_352Z](https://github.com/Antony-M1/django-production-setup/assets/101241405/6442568a-b2d3-40de-a767-d0d042877a6b)
