@@ -1,4 +1,54 @@
 # DJANGO PRODUCTION SETUP WITH NGINX FOR BOTH ASGI AND WSGI
+
+### Create Instance.
+#### Launch instance
+Start by logging in to your AWS Management Console.
+Navigate to the EC2 service and click on "Launch Instance."
+Choose an Amazon Machine Image (AMI) for your instance. For example, select Ubuntu.
+Follow the instance configuration steps, including choosing the instance type and configuring network settings.
+#### Key pair
+Key Pair for creating SSH client. The SSH client provides a secure environment in which to connect to a remote computer.
+Download and save the private key file that will be generated. This file will be used for securely connecting to your instance via SSH.
+
+Note:
+if removing ssh from inbound rule we connect in future.
+          
+After the successful creation of an instance, connect it.
+
+### To connect the remote server in the terminal
+
+```
+chmod 400 your-key-pair.pem
+```
+This command changes the permissions on the SSH key pair file to make it readable only by the file owner (you) and not accessible by others. 
+
+```
+ssh -i your-key-pair.pem ubuntu@public-ip-or-dns
+```
+ This command initiates an SSH connection to your EC2 instance. It uses the SSH key pair (your-key-pair.pem) for authentication.
+Replace your-key-pair.pem with the actual path to your private key file.
+Replace ubuntu with the appropriate username for the AMI you are using (e.g., "ubuntu" for Ubuntu-based AMIs).
+Replace public-ip-or-dns with the public IP address or domain name of your EC2 instance.
+ex:
+```
+ssh -i myapp.pem ubuntu@15.206.163.199
+```
+### To connect the remote server in the vscode:
+Install extension remote ssh.
+Open remote explorer. And create remote ssh
+Add the SSH Host Configuration:
+
+Host 15.206.163.199
+    HostName 15.206.163.199
+    User ubuntu
+    IdentityFile /home/softsuave/myapp.pem
+    
+Host: This is a label for the host configuration. It's the name you will use to connect to the host.
+HostName: The IP address or domain name of the remote host.
+User: The username to use when connecting to the host (in this case, "ubuntu").
+IdentityFile: The path to your private key file, which is used for authentication when connecting.
+
+
 ### Prerequisites
 - Gunicorn
 - Nginx &
@@ -46,7 +96,19 @@ gunicorn --bind 0.0.0.0:8000 myproject.wsgi
 ```
 uvicorn myproject.asgi:application
 ```
-This will start Gunicorn or Uvicorn on the same interface that the Django development server was runnig on. We can go back and test the app again in your browser
+
+### Add Inbound rules:
+
+In EC2, Open instance navigate to security, Click Security groups, Where you can see Inbound rules.
+
+Edit inbound rule,
+
+![image](https://github.com/Antony-M1/django-production-setup/assets/101241405/208678d2-baf0-4653-9678-495009881d8b)
+
+
+This will start Gunicorn or Uvicorn on the same interface that the Django development server was running on. We can go back and test the app again in your browser
+
+Example link: http://15.206.163.199:8000
 
 _Note: The admin interface will not have any of the styling applied since **Gunicorn or Uvicorn does not know how to find the static CSS content** responsible for this_
 
@@ -214,8 +276,17 @@ server {
 }
 ```
 - In server block We're specifying that this should listen on the normal port 80 and it should response to our server's domain or IP address
+server's domain or IP address:
+ex:
+```
+server_name 15.206.163.199 django.erpnext.tech;
+```
+ First is the IP address, and second is the hostname.
+  
 - Next Step, We'll tell Nginx to ignore any problems with finding a favicon. We'll also tell it where to find the static assets that we've collected in our projectdir/static directory. All of these files have a standand URI prefix of "/static", So we can create a location block to match those requests.
 - Finally, Create a location / {} block to match all other requests. Inside of this location, We'll include the standard proxy_params(Forwarding to app server) file included with the Nginx installation and then pass the traffic directly to the gunicorn socket
+
+
 
 Save and close the file when We're finished. Now we can enable the file by linking it to the sites-enabled directory
 ```
@@ -241,12 +312,40 @@ sudo ufw allow 'Nginx Full'
 We should now be able to go to our server’s domain or IP address to view our application.
 
 
+# certbot
+
+SSH into the server running your HTTP website as a user with sudo privileges. Install using snapd.
+## Prepare the Certbot command
+
+```
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+```
+Execute the following instruction on the command line on the machine to ensure that the certbot command can be run.
+## Choose how you'd like to run Certbot
+```
+sudo certbot --nginx
+```
+
+Run this command to get a certificate and have Certbot edit your nginx configuration automatically to serve it, turning on HTTPS access in a single step.
+
+To confirm that your site is set up properly, visit https://yourwebsite.com/ in your browser and look for the lock icon in the URL bar.
+
+# Hostlinger
+
+
+
+![image_2023_10_18T13_43_39_352Z](https://github.com/Antony-M1/django-production-setup/assets/101241405/6442568a-b2d3-40de-a767-d0d042877a6b)
+
+
 # Reference Site
 [How To Set Up an ASGI Django App with Postgres, Nginx, and Uvicorn on Ubuntu 20.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-an-asgi-django-app-with-postgres-nginx-and-uvicorn-on-ubuntu-20-04)
 
 [How To Set Up Django with Postgres, Nginx, and Gunicorn on Ubuntu 22.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-22-04)
 
-
+[Certbot](https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal&tab=standard)
+# Ref Youtube link:
+[deploy the django in ec2](https://www.youtube.com/watch?v=uiPSnrE6uWE)
+[ssh client](https://www.youtube.com/watch?v=jIxkbXB6-38)
 
 
 
