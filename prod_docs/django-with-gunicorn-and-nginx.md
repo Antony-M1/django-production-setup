@@ -346,6 +346,8 @@ A CNAME record (Canonical Name Record) is used to create an alias or shortcut fo
 
 name -> domain name, here it is django
 
+point to -> Add the ip address
+
 TTL -> TTL is measured in seconds, and it signifies the amount of time a DNS resolver should keep a record in its cache before checking for an updated version from the authoritative DNS server.
 
 
